@@ -2,6 +2,9 @@ package com.epam.ld.module2.testing;
 
 import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -16,7 +19,7 @@ public class TemplateUtils {
   }
 
   public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues)
-      throws TemplateException {
+      throws TemplateException, IOException {
     val subjectTemplateContent = getContent("templates/subjects/" + template.getSubjectTemplate());
     val bodyTemplateContent = getContent("templates/" + template.getBodyTemplate());
     val subject = overrideTemplateContent(subjectTemplateContent, templateValues);
@@ -53,8 +56,13 @@ public class TemplateUtils {
 
   public static void writeMessageToFile(Message message, String filename) { }
 
-  static String getContent(String fileName) {
-    return null;
+  static String getContent(String fileName) throws IOException {
+    String content;
+    try (val is = TemplateUtils.class.getClassLoader().getResourceAsStream(fileName)) {
+      content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    }
+
+    return content;
   }
 
   public record Message(String subject, String body) { }

@@ -6,6 +6,7 @@ import com.epam.ld.module2.testing.TemplateUtils.Message;
 import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import com.epam.ld.module2.testing.service.MessageTemplateService;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class Messenger {
   private final MailServer mailServer;
   private final MessageTemplateService messageTemplateService;
 
-  public void sendNotification(String... args) throws TemplateException {
+  public void sendNotification(String... args) throws TemplateException, IOException {
     MessageTemplate template;
     Map<String, String> templateValues;
     int length = args.length;
