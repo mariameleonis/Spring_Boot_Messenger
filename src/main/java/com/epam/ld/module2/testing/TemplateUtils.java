@@ -11,7 +11,7 @@ public class TemplateUtils {
   }
 
   public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues) {
-    return new Message("subject", null);
+    return new Message("subject", "    ");
   }
 
   public static Map<String, String> readTemplateValues() {
