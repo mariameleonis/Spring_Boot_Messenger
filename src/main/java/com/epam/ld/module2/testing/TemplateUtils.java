@@ -18,8 +18,10 @@ public class TemplateUtils {
   public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues)
       throws TemplateException {
     val subjectTemplateContent = getContent("templates/subjects/" + template.getSubjectTemplate());
+    val bodyTemplateContent = getContent("templates/" + template.getBodyTemplate());
     val subject = overrideTemplateContent(subjectTemplateContent, templateValues);
-    return new Message(subject, "body");
+    val body = overrideTemplateContent(bodyTemplateContent, templateValues);
+    return new Message(subject, body);
   }
 
   private static String overrideTemplateContent(String templateContent,
