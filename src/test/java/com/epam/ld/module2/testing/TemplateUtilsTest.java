@@ -8,7 +8,6 @@ import static org.mockito.Mockito.mockStatic;
 
 import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.val;
@@ -22,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class TemplateUtilsTest {
 
   @Test
-  void generateMessage_shouldNeverReturnNull() {
+  void generateMessage_shouldNeverReturnNull() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -31,7 +30,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageSubjectShouldNeverBeNull() {
+  void generateMessage_messageSubjectShouldNeverBeNull() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -40,7 +39,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageSubjectShouldNeverBeBlank() {
+  void generateMessage_messageSubjectShouldNeverBeBlank() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -49,7 +48,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageBodyShouldNeverBeNull() {
+  void generateMessage_messageBodyShouldNeverBeNull() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -58,7 +57,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageBodyShouldNeverBeBlank() {
+  void generateMessage_messageBodyShouldNeverBeBlank() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -67,7 +66,8 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_shouldReturnSubjectTemplateContentIfNoPlaceholders() {
+  void generateMessage_shouldReturnSubjectTemplateContentIfNoPlaceholders()
+      throws TemplateException {
     val subjectTemplate = "subject.txt";
 
     val template = MessageTemplate.builder()
@@ -85,7 +85,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_shouldOverrideSubjectTemplateWithProvidedValue() {
+  void generateMessage_shouldOverrideSubjectTemplateWithProvidedValue() throws TemplateException {
     val subjectTemplate = "subject.txt";
 
     val template = MessageTemplate.builder()
@@ -114,7 +114,6 @@ class TemplateUtilsTest {
     val values = new HashMap<String, String>();
     val fileName = "templates/subjects/" + subjectTemplate;
     val expectedContent = "Hello, ${name}!";
-    val expectedSubject = "Hello, Mariya!";
     try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
       mocked.when(() -> TemplateUtils.getContent(fileName)).thenReturn(expectedContent);
       assertThrows(TemplateException.class, () -> TemplateUtils.generateMessage(template, values));

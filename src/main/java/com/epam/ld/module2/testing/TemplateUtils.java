@@ -1,5 +1,6 @@
 package com.epam.ld.module2.testing;
 
+import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.util.Collections;
 import java.util.Map;
@@ -14,19 +15,23 @@ public class TemplateUtils {
 
   }
 
-  public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues) {
+  public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues)
+      throws TemplateException {
     val subjectTemplateContent = getContent("templates/subjects/" + template.getSubjectTemplate());
     val subject = overrideTemplateContent(subjectTemplateContent, templateValues);
     return new Message(subject, "body");
   }
 
   private static String overrideTemplateContent(String templateContent,
-      Map<String, String> templateValues) {
+      Map<String, String> templateValues) throws TemplateException {
     var result = templateContent;
     val pattern = Pattern.compile(TEMPLATE_REGEX);
     val matcher = pattern.matcher(templateContent);
     while (matcher.find()) {
-      String placeHolder = matcher.group(1);
+      val placeHolder = matcher.group(1);
+      if (!templateValues.containsKey(placeHolder)) {
+        throw new TemplateException("No value provided for placeholder: " + placeHolder);
+      }
       result = result.replaceFirst(Pattern.quote(matcher.group()), templateValues.get(placeHolder));
     }
     return result;

@@ -3,6 +3,7 @@ package com.epam.ld.module2.testing;
 import static com.epam.ld.module2.testing.TemplateUtils.*;
 
 import com.epam.ld.module2.testing.TemplateUtils.Message;
+import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import com.epam.ld.module2.testing.service.MessageTemplateService;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class Messenger {
   private final MailServer mailServer;
   private final MessageTemplateService messageTemplateService;
 
-  public void sendNotification(String... args) {
+  public void sendNotification(String... args) throws TemplateException {
     MessageTemplate template;
     Map<String, String> templateValues;
     int length = args.length;
