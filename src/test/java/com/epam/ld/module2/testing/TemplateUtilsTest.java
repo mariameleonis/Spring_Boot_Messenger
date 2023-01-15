@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
 
 import com.epam.ld.module2.testing.exception.TemplateException;
@@ -117,6 +118,27 @@ class TemplateUtilsTest {
     try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
       mocked.when(() -> TemplateUtils.getContent(fileName)).thenReturn(expectedContent);
       assertThrows(TemplateException.class, () -> TemplateUtils.generateMessage(template, values));
+    }
+  }
+
+  @Test
+  void generateMessage_shouldOverrideBodyTemplateWithProvidedValue() throws TemplateException {
+    val templateFile = "subject.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(templateFile)
+        .bodyTemplate(templateFile)
+        .build();
+
+    val values = Map.of(
+        "name", "Mariya");
+
+    val expectedContent = "Hello, ${name}!";
+    val expectedBody = "Hello, Mariya!";
+    try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class,
+        Mockito.CALLS_REAL_METHODS)) {
+      mocked.when(() -> TemplateUtils.getContent(anyString())).thenReturn(expectedContent);
+      assertEquals(expectedBody, TemplateUtils.generateMessage(template, values).body());
     }
   }
 }
