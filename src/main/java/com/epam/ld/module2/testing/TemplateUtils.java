@@ -77,7 +77,8 @@ public class TemplateUtils {
   }
 
   public static Long readMessageTemplateId() {
-    return null;
+
+    return 0L;
   }
 
   public static void writeMessageToFile(Message message, String filename) { }
