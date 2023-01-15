@@ -4,9 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.epam.ld.module2.testing.TemplateUtils.Message;
 import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
@@ -25,6 +28,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 @ExtendWith(MockitoExtension.class)
 class TemplateUtilsTest {
@@ -253,6 +259,23 @@ class TemplateUtilsTest {
     System.setIn(new ByteArrayInputStream("3".getBytes()));
     val result = TemplateUtils.readMessageTemplateId();
     assertEquals(3L, result);
+    System.setIn(System.in);
+  }
+
+  @Test
+  void readMessageTemplateId_shouldLogErrorIfInputIsInvalid() {
+    System.setIn(new ByteArrayInputStream("invalid".getBytes()));
+    Logger log = (Logger) LoggerFactory.getLogger(TemplateUtils.class);
+    val testLogAppender = new TestLogAppender();
+    log.addAppender(testLogAppender);
+    testLogAppender.start();
+
+    TemplateUtils.readMessageTemplateId();
+
+    val lastLoggedEvent = testLogAppender.getLastLoggedEvent();
+
+    assertEquals("Invalid input. Please enter a valid long value.", lastLoggedEvent.getMessage());
+
     System.setIn(System.in);
   }
 
