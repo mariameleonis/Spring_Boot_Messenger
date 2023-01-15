@@ -6,7 +6,9 @@ import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -44,7 +46,16 @@ public class TemplateUtils {
   }
 
   public static Map<String, String> readTemplateValues() {
-    return Collections.emptyMap();
+    val scanner = new Scanner(System.in);
+    System.out.println("Enter the variables in the format 'key=value':");
+    Map<String, String> variables = new HashMap<>();
+    String line;
+    while (scanner.hasNextLine()) {
+      line = scanner.nextLine();
+      String[] parts = line.split("=");
+      variables.put(parts[0], parts[1]);
+    }
+    return variables;
   }
 
   public static Map<String, String> readTemplateValues(String filename) {
