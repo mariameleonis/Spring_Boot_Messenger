@@ -247,4 +247,13 @@ class TemplateUtilsTest {
     val result = TemplateUtils.readMessageTemplateId();
     assertNotNull(result);
   }
+
+  @Test
+  void readMessageTemplateId_shouldReadFromConsoleAndReturnUserChoice() {
+    System.setIn(new ByteArrayInputStream("3".getBytes()));
+    val result = TemplateUtils.readMessageTemplateId();
+    assertEquals(3L, result);
+    System.setIn(System.in);
+  }
+
 }
