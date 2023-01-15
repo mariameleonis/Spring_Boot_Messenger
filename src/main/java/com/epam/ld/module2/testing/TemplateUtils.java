@@ -4,7 +4,6 @@ import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
