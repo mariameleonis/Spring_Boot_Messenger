@@ -26,7 +26,6 @@ public class Messenger {
   private final MessageTemplateService messageTemplateService;
 
   public void sendNotification(String... args) {
-    // если args.length == 0 использовать метод template без аргументов, если 2 использовать template с аргументами
     MessageTemplate template;
     Map<String, String> templateValues;
     int length = args.length;
