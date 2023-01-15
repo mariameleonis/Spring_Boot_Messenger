@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.val;
@@ -213,5 +214,31 @@ class TemplateUtilsTest {
     assertEquals("value2", result.get("key2"));
 
     System.setIn(System.in);
+  }
+
+  @Test
+  void readTemplateValues_shouldReadFromFileAndReturnMap() throws IOException {
+    String fileName = null;
+    Path path = null;
+    try {
+      path = Files.createTempFile("myTempFile", ".txt");
+      fileName = path.toFile().getAbsolutePath();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    String content = """
+        key1=value1
+        key2=value2
+        """;
+
+    try (val writer = new FileWriter(path.toFile())) {
+      writer.write(content);
+    }
+
+    Map<String, String> result = TemplateUtils.readTemplateValues(fileName);
+
+    assertEquals("value1", result.get("key1"));
+    assertEquals("value2", result.get("key2"));
   }
 }
