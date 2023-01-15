@@ -11,8 +11,10 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
+@Slf4j
 public class TemplateUtils {
 
   private static final String TEMPLATE_REGEX = "\\$\\{([^}]+)\\}";
@@ -47,15 +49,15 @@ public class TemplateUtils {
 
   public static Map<String, String> readTemplateValues() {
     val scanner = new Scanner(System.in);
-    System.out.println("Enter the variables in the format 'key=value':");
-    Map<String, String> variables = new HashMap<>();
+    log.info("Enter the values in the format 'key=value':");
+    Map<String, String> values = new HashMap<>();
     String line;
     while (scanner.hasNextLine()) {
       line = scanner.nextLine();
       String[] parts = line.split("=");
-      variables.put(parts[0], parts[1]);
+      values.put(parts[0], parts[1]);
     }
-    return variables;
+    return values;
   }
 
   public static Map<String, String> readTemplateValues(String filename) {
