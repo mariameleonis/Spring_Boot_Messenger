@@ -3,6 +3,8 @@ package com.epam.ld.module2.testing;
 import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -61,7 +63,17 @@ public class TemplateUtils {
   }
 
   public static Map<String, String> readTemplateValues(String filename) {
-    return Collections.emptyMap();
+    Map<String, String> map = new HashMap<>();
+    try (val br = new BufferedReader(new FileReader(filename))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        String[] parts = line.split("=");
+        map.put(parts[0], parts[1]);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return map;
   }
 
   public static Long readMessageTemplateId() {
