@@ -3,8 +3,10 @@ package com.epam.ld.module2.testing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
 
+import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.io.IOException;
 import java.util.HashMap;
@@ -98,6 +100,24 @@ class TemplateUtilsTest {
     try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
       mocked.when(() -> TemplateUtils.getContent(fileName)).thenReturn(expectedContent);
       assertEquals(expectedSubject, TemplateUtils.generateMessage(template, values).subject());
+    }
+  }
+
+  @Test
+  void generateMessage_shouldThrowTemplateExceptionWhenTemplateValueNotFound() {
+    val subjectTemplate = "subject.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(subjectTemplate)
+        .build();
+
+    val values = new HashMap<String, String>();
+    val fileName = "templates/subjects/" + subjectTemplate;
+    val expectedContent = "Hello, ${name}!";
+    val expectedSubject = "Hello, Mariya!";
+    try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
+      mocked.when(() -> TemplateUtils.getContent(fileName)).thenReturn(expectedContent);
+      assertThrows(TemplateException.class, () -> TemplateUtils.generateMessage(template, values));
     }
   }
 }
