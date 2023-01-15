@@ -77,8 +77,8 @@ public class TemplateUtils {
   }
 
   public static Long readMessageTemplateId() {
-
-    return 0L;
+    val scanner = new Scanner(System.in);
+    return scanner.nextLong();
   }
 
   public static void writeMessageToFile(Message message, String filename) { }
