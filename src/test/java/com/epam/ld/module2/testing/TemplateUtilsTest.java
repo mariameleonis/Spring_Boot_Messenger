@@ -65,7 +65,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_shouldReturnSubjectTemplateContentIfNoPlaceholders() throws IOException {
+  void generateMessage_shouldReturnSubjectTemplateContentIfNoPlaceholders() {
     val subjectTemplate = "subject.txt";
 
     val template = MessageTemplate.builder()
@@ -80,6 +80,24 @@ class TemplateUtilsTest {
       mocked.when(() -> TemplateUtils.getContent(fileName)).thenReturn(expected);
       assertEquals(expected, TemplateUtils.generateMessage(template, values).subject());
     }
+  }
 
+  @Test
+  void generateMessage_shouldOverrideSubjectTemplateWithProvidedValue() {
+    val subjectTemplate = "subject.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(subjectTemplate)
+        .build();
+
+    val values = Map.of(
+        "name", "Mariya");
+    val fileName = "templates/subjects/" + subjectTemplate;
+    val expectedContent = "Hello, ${name}!";
+    val expectedSubject = "Hello, Mariya!";
+    try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
+      mocked.when(() -> TemplateUtils.getContent(fileName)).thenReturn(expectedContent);
+      assertEquals(expectedSubject, TemplateUtils.generateMessage(template, values).subject());
+    }
   }
 }
