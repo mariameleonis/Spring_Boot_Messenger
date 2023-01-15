@@ -3,6 +3,7 @@ package com.epam.ld.module2.testing;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.util.Collections;
 import java.util.Map;
+import lombok.val;
 
 public class TemplateUtils {
 
@@ -11,7 +12,8 @@ public class TemplateUtils {
   }
 
   public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues) {
-    return new Message("subject", "body");
+    val subject = getContent("templates/subjects/" + template.getSubjectTemplate());
+    return new Message(subject, "body");
   }
 
   public static Map<String, String> readTemplateValues() {
