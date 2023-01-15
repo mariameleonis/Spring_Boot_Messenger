@@ -1,0 +1,18 @@
+Dear ${name},
+
+You have following desk booking for today, but have not
+checked-in it yet.
+
+Booking details:
+
+Date: ${date}
+Country: ${country}
+City: ${city}
+Office: ${office}
+Room: ${room}
+Workplace: ${place}
+
+If you are still going to use this desk, please check-in it, otherwise your booking will be cancelled.
+
+Thank you,
+desk.epam.com

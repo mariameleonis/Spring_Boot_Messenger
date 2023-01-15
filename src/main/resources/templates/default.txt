@@ -1,0 +1,12 @@
+Dear ${name}!
+
+How template generator works:
+
+Country: ${country}
+City: ${city}
+Office: ${office}
+Workplace: ${place}
+
+Kind regards,
+Management Team
+

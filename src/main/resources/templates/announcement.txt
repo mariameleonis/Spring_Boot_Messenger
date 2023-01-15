@@ -1,0 +1,18 @@
+Dear ${name},
+
+We are arranging a #{partyName} party, and we are happy to invite you to join us.
+We'll serve our guests #{foodType} food and share some good moments!
+All we request is your presence as we celebrate the night of #{date} with our friends and loved ones.
+
+Please come and share in our happiness!
+
+Party details:
+
+Date: ${date}
+Theme: ${theme}
+Food: ${foodType}
+Dress-code: ${dress}
+Special events: ${events}
+
+Thank you,
+Management

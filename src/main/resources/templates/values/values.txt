@@ -1,0 +1,5 @@
+name=Mariya
+country=Kazakhstan
+city=Almaty
+office=Ergozhina,27
+place=11.12

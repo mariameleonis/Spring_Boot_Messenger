@@ -1,0 +1,10 @@
+Dear ${name},
+
+Congratulations for winning the lottery!
+
+Your prize: ${prize}
+Valid until: ${date}
+Contact person: ${contact}
+
+I hope you are prepared for the great and exciting changes that will come to your life soon.
+Enjoy and stay safe.
