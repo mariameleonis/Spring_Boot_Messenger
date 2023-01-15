@@ -11,6 +11,7 @@ import com.epam.ld.module2.testing.TemplateUtils.Message;
 import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -200,5 +201,17 @@ class TemplateUtilsTest {
     assertThrows(
         TemplateNotFoundException.class, () -> TemplateUtils.generateMessage(template, values));
 
+  }
+
+  @Test
+  void readTemplateValues_shouldReturnValidUserInputAndReturnMap() {
+    System.setIn(new ByteArrayInputStream("key1=value1\nkey2=value2\n".getBytes()));
+
+    Map<String, String> result = TemplateUtils.readTemplateValues();
+
+    assertEquals("value1", result.get("key1"));
+    assertEquals("value2", result.get("key2"));
+
+    System.setIn(System.in);
   }
 }
