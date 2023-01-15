@@ -1,6 +1,7 @@
 package com.epam.ld.module2.testing;
 
 import com.epam.ld.module2.testing.exception.TemplateException;
+import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
+import lombok.SneakyThrows;
 import lombok.val;
 
 public class TemplateUtils {
@@ -56,10 +58,13 @@ public class TemplateUtils {
 
   public static void writeMessageToFile(Message message, String filename) { }
 
-  static String getContent(String fileName) throws IOException {
+  @SneakyThrows
+  static String getContent(String fileName) {
     String content;
     try (val is = TemplateUtils.class.getClassLoader().getResourceAsStream(fileName)) {
       content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+    } catch (NullPointerException e) {
+      throw new TemplateNotFoundException("Template associated with file " + fileName + "cannot be found.");
     }
 
     return content;
