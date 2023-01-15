@@ -3,17 +3,33 @@ package com.epam.ld.module2.testing;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.util.Collections;
 import java.util.Map;
+import java.util.regex.Pattern;
 import lombok.val;
 
 public class TemplateUtils {
+
+  private static final String TEMPLATE_REGEX = "\\$\\{([^}]+)\\}";
 
   private TemplateUtils() {
 
   }
 
   public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues) {
-    val subject = getContent("templates/subjects/" + template.getSubjectTemplate());
+    val subjectTemplateContent = getContent("templates/subjects/" + template.getSubjectTemplate());
+    val subject = overrideTemplateContent(subjectTemplateContent, templateValues);
     return new Message(subject, "body");
+  }
+
+  private static String overrideTemplateContent(String templateContent,
+      Map<String, String> templateValues) {
+    var result = templateContent;
+    val pattern = Pattern.compile(TEMPLATE_REGEX);
+    val matcher = pattern.matcher(templateContent);
+    while (matcher.find()) {
+      String placeHolder = matcher.group(1);
+      result = result.replaceFirst(Pattern.quote(matcher.group()), templateValues.get(placeHolder));
+    }
+    return result;
   }
 
   public static Map<String, String> readTemplateValues() {
