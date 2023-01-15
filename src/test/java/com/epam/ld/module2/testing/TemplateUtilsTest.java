@@ -44,4 +44,13 @@ class TemplateUtilsTest {
     val result = TemplateUtils.generateMessage(template, values);
     assertNotNull(result.body());
   }
+
+  @Test
+  void generateMessage_messageBodyShouldNeverBeBlank() {
+    val template = MessageTemplate.builder().build();
+    val values = Map.of(
+        "name", "Mariya");
+    val result = TemplateUtils.generateMessage(template, values);
+    assertFalse(result.body().isBlank());
+  }
 }
