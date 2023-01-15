@@ -241,4 +241,10 @@ class TemplateUtilsTest {
     assertEquals("value1", result.get("key1"));
     assertEquals("value2", result.get("key2"));
   }
+
+  @Test
+  void readMessageTemplateId_shouldNeverReturnNull() {
+    val result = TemplateUtils.readMessageTemplateId();
+    assertNotNull(result);
+  }
 }
