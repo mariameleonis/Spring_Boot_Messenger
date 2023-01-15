@@ -9,6 +9,7 @@ import static org.mockito.Mockito.mockStatic;
 
 import com.epam.ld.module2.testing.TemplateUtils.Message;
 import com.epam.ld.module2.testing.exception.TemplateException;
+import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.io.File;
 import java.io.FileWriter;
@@ -183,5 +184,21 @@ class TemplateUtilsTest {
     Files.delete(bodyTemplate.toPath());
 
     assertEquals(expectedMessage, message);
+  }
+
+  @Test
+  void generateMessage_shouldThrowTemplateNotFoundException() {
+    val tempFileName = "test_template_05878543215896.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(tempFileName)
+        .bodyTemplate(tempFileName)
+        .build();
+
+    val values = new HashMap<String, String>();
+
+    assertThrows(
+        TemplateNotFoundException.class, () -> TemplateUtils.generateMessage(template, values));
+
   }
 }
