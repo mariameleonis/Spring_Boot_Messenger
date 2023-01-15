@@ -28,6 +28,10 @@ public class TemplateUtils {
 
   public static void writeMessageToFile(Message message, String filename) { }
 
-    public record Message(String subject, String body) { }
+  static String getContent(String fileName) {
+    return null;
+  }
+
+  public record Message(String subject, String body) { }
 
 }
