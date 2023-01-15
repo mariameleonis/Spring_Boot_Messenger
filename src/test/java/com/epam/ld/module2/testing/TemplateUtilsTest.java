@@ -204,7 +204,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void readTemplateValues_shouldReturnValidUserInputAndReturnMap() {
+  void readTemplateValues_shouldReadValidUserInputAndReturnMap() {
     System.setIn(new ByteArrayInputStream("key1=value1\nkey2=value2\n".getBytes()));
 
     Map<String, String> result = TemplateUtils.readTemplateValues();
