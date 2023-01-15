@@ -279,4 +279,12 @@ class TemplateUtilsTest {
     System.setIn(System.in);
   }
 
+  @Test
+  void readMessageTemplateId_shouldReadFromConsoleUntilValidValueEntered() {
+    System.setIn(new ByteArrayInputStream("abc\n123\n".getBytes()));
+    val result = TemplateUtils.readMessageTemplateId();
+    assertEquals(123L, result);
+    System.setIn(System.in);
+  }
+
 }
