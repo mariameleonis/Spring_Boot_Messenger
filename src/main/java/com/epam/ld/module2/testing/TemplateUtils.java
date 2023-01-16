@@ -51,7 +51,7 @@ public class TemplateUtils {
       val value = templateValues.get(placeHolder);
       if (value.matches(TEMPLATE_REGEX)) {
         encodedValues.put(matcher.group(), Base64.getEncoder().encodeToString(value.getBytes()));
-        break;
+        continue;
       }
       result = result.replaceFirst(Pattern.quote(matcher.group()), templateValues.get(placeHolder));
     }
