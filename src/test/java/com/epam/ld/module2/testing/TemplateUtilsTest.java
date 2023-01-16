@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 import lombok.val;
 import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -46,9 +47,11 @@ import org.slf4j.LoggerFactory;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(FileOutputExtension.class)
+@Tag("branch-1")
 class TemplateUtilsTest {
 
   @Test
+  @Tag("feature-3")
   void generateMessage_shouldNeverReturnNull() throws TemplateException {
     val subjectTemplate = "subject.txt";
 
@@ -69,6 +72,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("feature-3")
   void generateMessage_messageSubjectShouldNeverBeNull() throws TemplateException {
     val subjectTemplate = "subject.txt";
 
@@ -89,6 +93,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("feature-3")
   void generateMessage_messageSubjectShouldNeverBeBlank() throws TemplateException {
     val subjectTemplate = "subject.txt";
 
@@ -109,6 +114,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("feature-3")
   void generateMessage_messageBodyShouldNeverBeNull() throws TemplateException {
     val subjectTemplate = "subject.txt";
 
@@ -129,6 +135,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("feature-3")
   void generateMessage_messageBodyShouldNeverBeBlank() throws TemplateException {
     val subjectTemplate = "subject.txt";
 
@@ -149,6 +156,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("feature-3")
   void generateMessage_shouldReturnSubjectTemplateContentIfNoPlaceholders()
       throws TemplateException {
     val subjectTemplate = "subject.txt";
@@ -169,6 +177,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("feature-3")
   void generateMessage_shouldOverrideSubjectTemplateWithProvidedValue()
       throws TemplateException {
     val subjectTemplate = "subject.txt";
@@ -190,6 +199,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("ExceptionRule")
   void generateMessage_shouldThrowTemplateExceptionWhenTemplateValueNotFound() {
     val subjectTemplate = "subject.txt";
 
@@ -207,6 +217,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("UnitTest")
   void generateMessage_shouldOverrideBodyTemplateWithProvidedValue()
       throws TemplateException {
     val templateFile = "subject.txt";
@@ -229,6 +240,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("UnitTest")
   void generateMessage_shouldOverrideTemplateWithProvidedValue()
       throws TemplateException, IOException {
     val tempFileName = "test_template_05878543215896.txt";
@@ -265,6 +277,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("ExceptionRule")
   void generateMessage_shouldThrowTemplateNotFoundException() {
     val tempFileName = "test_template_05878543215896.txt";
 
@@ -281,6 +294,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("UnitTest")
   void readTemplateValues_shouldReadValidUserInputAndReturnMap() {
     System.setIn(new ByteArrayInputStream("key1=value1\nkey2=value2\n".getBytes()));
 
@@ -293,6 +307,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("UnitTest")
   void readTemplateValues_shouldReadFromFileAndReturnMap() throws IOException {
     String fileName = null;
     Path path = null;
@@ -319,6 +334,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("UnitTest")
   void readMessageTemplateId_shouldReadFromConsoleAndReturnUserChoice() {
     System.setIn(new ByteArrayInputStream("3".getBytes()));
     val result = TemplateUtils.readMessageTemplateId();
@@ -345,6 +361,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @Tag("UnitTest")
   @DisabledIfSystemProperty(named = "os.version", matches = ".*10.*")
   void readMessageTemplateId_shouldReadFromConsoleUntilValidValueEntered() {
     System.setIn(new ByteArrayInputStream("abc\n123\n".getBytes()));
@@ -355,6 +372,7 @@ class TemplateUtilsTest {
 
   @TempDir
   File folder;
+  @Tag("TempDir")
   @Test
   void writeMessageToFile_WithValidInput_ShouldCreateFile() throws IOException {
     val filename = folder.getAbsolutePath() + "/test.txt";
@@ -369,6 +387,7 @@ class TemplateUtilsTest {
 
   @Test
   @DisabledOnJre(JRE.JAVA_13)
+  @Tag("UnitTest")
   void writeMessageToFile_WithValidInput_ShouldCreateFileWithMessageSubjectAndBody() throws IOException {
     val subject = "Test Subject";
     val body = "Test Body";
@@ -391,6 +410,7 @@ class TemplateUtilsTest {
   @ParameterizedTest
   @MethodSource("generateMessageArguments")
   @DisabledOnOs(OS.WINDOWS)
+  @Tag("Parametrized")
   void testGenerateMessage_parametrizedTemplateValues(String subjectTemplate, String bodyTemplate,
       Map<String, String> templateValues, String expectedSubject, String expectedBody)
       throws TemplateException {
@@ -423,6 +443,7 @@ class TemplateUtilsTest {
 
   @TestFactory
   @DisabledOnOs({OS.AIX, OS.LINUX, OS.SOLARIS})
+  @Tag("DynamicTest")
   Stream<DynamicTest> generateMessageTest_dynamicTest() {
     return Stream.of(
         Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "Mariya"), "Hello, Mariya!", "Dear Mariya"),
