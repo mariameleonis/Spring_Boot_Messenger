@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import com.epam.ld.module2.testing.repository.MessageTemplateRepository;
 import java.util.Collections;
+import java.util.Optional;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,5 +43,14 @@ class MessageTemplateServiceImplTest {
     val code = "code";
     service.findByCode(code);
     verify(repository).findByCode(code);
+  }
+
+  @Test
+  void findByCode_ifFound_shouldReturnMessageTemplate() {
+    val messageTemplate = MessageTemplate.builder().build();
+    val code = "code";
+    when(repository.findByCode(code)).thenReturn(Optional.of(messageTemplate));
+    val result = service.findByCode(code);
+    assertEquals(messageTemplate, result);
   }
 }
