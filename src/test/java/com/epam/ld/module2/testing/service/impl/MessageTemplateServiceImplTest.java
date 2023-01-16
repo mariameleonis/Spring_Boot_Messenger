@@ -1,17 +1,13 @@
 package com.epam.ld.module2.testing.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.spy;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.epam.ld.module2.testing.FileOutputExtension;
 import com.epam.ld.module2.testing.repository.MessageTemplateRepository;
 import lombok.val;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)

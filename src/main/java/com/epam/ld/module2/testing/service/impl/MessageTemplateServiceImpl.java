@@ -16,7 +16,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
 
   @Override
   public List<MessageTemplate> findAll() {
-    return Collections.emptyList();
+    return List.of(MessageTemplate.builder().build());
   }
 
   @Override
