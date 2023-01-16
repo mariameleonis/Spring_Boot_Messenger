@@ -22,10 +22,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -318,6 +322,38 @@ class TemplateUtilsTest {
     val content = new String(Files.readAllBytes(file.toPath()));
 
     assertEquals(expectedContent.trim(), content.trim());
+  }
+
+  @ParameterizedTest
+  @MethodSource("generateMessageArguments")
+  void testGenerateMessage_parametrizedTemplateValues(String subjectTemplate, String bodyTemplate,
+      Map<String, String> templateValues, String expectedSubject, String expectedBody)
+      throws TemplateException {
+
+    val templateFile = "test.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(templateFile)
+        .bodyTemplate(templateFile)
+        .build();
+
+    try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class,
+        Mockito.CALLS_REAL_METHODS)) {
+      mocked.when(() -> TemplateUtils.getContent("templates/subjects/" + template.getSubjectTemplate()))
+          .thenReturn(subjectTemplate);
+      mocked.when(() -> TemplateUtils.getContent("templates/" + template.getBodyTemplate()))
+          .thenReturn(bodyTemplate);
+     val message = TemplateUtils.generateMessage(template, templateValues);
+      assertEquals(expectedSubject, message.subject());
+      assertEquals(expectedBody, message.body());
+    }
+  }
+
+  static Stream<Arguments> generateMessageArguments() {
+    return Stream.of(
+        Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "Mariya"), "Hello, Mariya!", "Dear Mariya"),
+        Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "${tag}"), "Hello, ${tag}!", "Dear ${tag}"),
+        Arguments.of("Hello, Friend", "Dear ${name}", Map.of("name", "12345"), "Hello, Friend", "Dear 12345"));
   }
 
 }
