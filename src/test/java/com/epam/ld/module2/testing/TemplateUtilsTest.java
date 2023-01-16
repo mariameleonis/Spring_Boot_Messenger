@@ -41,12 +41,23 @@ import org.slf4j.LoggerFactory;
 class TemplateUtilsTest {
 
   @Test
-  void generateMessage_shouldNeverReturnNull() throws TemplateException, IOException {
-    val template = MessageTemplate.builder().build();
+  void generateMessage_shouldNeverReturnNull() throws TemplateException {
+    val subjectTemplate = "subject.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(subjectTemplate)
+        .bodyTemplate(subjectTemplate)
+        .build();
+
     val values = Map.of(
-        "name", "Mariya");
-    val result = TemplateUtils.generateMessage(template, values);
-    assertNotNull(result);
+        "name", "${tag}");
+
+    val expectedContent = "Hello, ${name}!";
+    val expectedSubject = "Hello, ${tag}!";
+    try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
+      mocked.when(() -> TemplateUtils.getContent(anyString())).thenReturn(expectedContent);
+      assertNotNull(TemplateUtils.generateMessage(template, values));
+    }
   }
 
   @Test
