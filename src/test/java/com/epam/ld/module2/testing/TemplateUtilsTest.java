@@ -147,14 +147,15 @@ class TemplateUtilsTest {
 
     val template = MessageTemplate.builder()
         .subjectTemplate(subjectTemplate)
+        .bodyTemplate(subjectTemplate)
         .build();
 
     val values = new HashMap<String, String>();
-    val fileName = "templates/subjects/" + subjectTemplate;
+
     val expected = "template content";
 
     try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
-      mocked.when(() -> TemplateUtils.getContent(fileName)).thenReturn(expected);
+      mocked.when(() -> TemplateUtils.getContent(anyString())).thenReturn(expected);
       assertEquals(expected, TemplateUtils.generateMessage(template, values).subject());
     }
   }
