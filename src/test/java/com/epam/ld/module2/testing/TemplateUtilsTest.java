@@ -137,7 +137,7 @@ class TemplateUtilsTest {
 
   @Test
   void generateMessage_shouldOverrideBodyTemplateWithProvidedValue()
-      throws TemplateException, IOException {
+      throws TemplateException {
     val templateFile = "subject.txt";
 
     val template = MessageTemplate.builder()
