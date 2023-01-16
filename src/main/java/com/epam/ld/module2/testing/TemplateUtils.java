@@ -4,6 +4,7 @@ import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -87,7 +88,12 @@ public class TemplateUtils {
     }
   }
 
-  public static void writeMessageToFile(Message message, String filename) { }
+  public static void writeMessageToFile(Message message, String filename) throws IOException {
+    val file = new File(filename);
+    if (!file.exists()) {
+      file.createNewFile();
+    }
+  }
 
   @SneakyThrows
   static String getContent(String fileName) {
