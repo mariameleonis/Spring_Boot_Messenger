@@ -27,7 +27,7 @@ public class TemplateUtils {
   }
 
   public static Message generateMessage(MessageTemplate template, Map<String, String> templateValues)
-      throws TemplateException, IOException {
+      throws TemplateException {
     val subjectTemplateContent = getContent("templates/subjects/" + template.getSubjectTemplate());
     val bodyTemplateContent = getContent("templates/" + template.getBodyTemplate());
     val subject = overrideTemplateContent(subjectTemplateContent, templateValues);
