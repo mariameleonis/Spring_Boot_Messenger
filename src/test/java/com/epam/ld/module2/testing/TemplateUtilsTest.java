@@ -24,7 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import lombok.val;
+import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -354,6 +356,46 @@ class TemplateUtilsTest {
         Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "Mariya"), "Hello, Mariya!", "Dear Mariya"),
         Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "${tag}"), "Hello, ${tag}!", "Dear ${tag}"),
         Arguments.of("Hello, Friend", "Dear ${name}", Map.of("name", "12345"), "Hello, Friend", "Dear 12345"));
+  }
+
+  @TestFactory
+  Stream<DynamicTest> generateMessageTest_dynamicTest() {
+    return Stream.of(
+        Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "Mariya"), "Hello, Mariya!", "Dear Mariya"),
+        Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "${tag}"), "Hello, ${tag}!", "Dear ${tag}"),
+        Arguments.of("Hello, ${name}", "Dear ${name} ${surname}", Map.of("name", "Mariya", "surname", "Russakova"), "Hello, Mariya", "Dear Mariya Russakova"),
+            Arguments.of("Hello, ${name}", "Dear ${name} ${surname}", Map.of("name", "${Mariya}", "surname", "Russakova"), "Hello, ${Mariya}", "Dear ${Mariya} Russakova"),
+        Arguments.of("Hello, Friend", "Dear ${name}", Map.of("name", "12345"), "Hello, Friend", "Dear 12345"))
+    .map(arguments -> {
+      val templateFile = "test.txt";
+
+      val template = MessageTemplate.builder()
+          .subjectTemplate(templateFile)
+          .bodyTemplate(templateFile)
+          .build();
+
+      Map<String, String> templateValues = (Map<String, String>) arguments.get()[2];
+      String subjectTemplate = (String) arguments.get()[0];
+      String bodyTemplate = (String) arguments.get()[1];
+      String expectedSubject = (String) arguments.get()[3];
+      String expectedBody = (String) arguments.get()[4];
+
+      return DynamicTest.dynamicTest("Test generateMessage: " + subjectTemplate + " , " + bodyTemplate, () -> {
+
+        try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class,
+            Mockito.CALLS_REAL_METHODS)) {
+          mocked.when(() -> TemplateUtils.getContent(
+                  "templates/subjects/" + template.getSubjectTemplate()))
+              .thenReturn(subjectTemplate);
+          mocked.when(() -> TemplateUtils.getContent("templates/" + template.getBodyTemplate()))
+              .thenReturn(bodyTemplate);
+          val message = TemplateUtils.generateMessage(template, templateValues);
+          assertEquals(expectedSubject, message.subject());
+          assertEquals(expectedBody, message.body());
+        }
+
+      });
+    });
   }
 
 }
