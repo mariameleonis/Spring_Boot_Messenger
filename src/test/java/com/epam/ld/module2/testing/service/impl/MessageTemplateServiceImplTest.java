@@ -1,9 +1,11 @@
 package com.epam.ld.module2.testing.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.epam.ld.module2.testing.exception.MessageTemplateNotFoundException;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import com.epam.ld.module2.testing.repository.MessageTemplateRepository;
 import java.util.Collections;
@@ -52,5 +54,12 @@ class MessageTemplateServiceImplTest {
     when(repository.findByCode(code)).thenReturn(Optional.of(messageTemplate));
     val result = service.findByCode(code);
     assertEquals(messageTemplate, result);
+  }
+
+  @Test
+  void findByCode_ifNotFound_shouldThrowsMessageTemplateNotFoundException() {
+    val code = "code";
+    when(repository.findByCode(code)).thenReturn(Optional.empty());
+    assertThrows(MessageTemplateNotFoundException.class, () -> service.findByCode(code));
   }
 }

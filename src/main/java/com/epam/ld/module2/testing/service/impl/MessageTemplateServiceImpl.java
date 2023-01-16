@@ -5,6 +5,7 @@ import com.epam.ld.module2.testing.repository.MessageTemplateRepository;
 import com.epam.ld.module2.testing.service.MessageTemplateService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +21,6 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
 
   @Override
   public MessageTemplate findByCode(String code) {
-    repository.findByCode(code);
-    return null;
+    return repository.findByCode(code).orElse(null);
   }
 }
