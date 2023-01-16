@@ -3,7 +3,6 @@ package com.epam.ld.module2.testing.service.impl;
 import com.epam.ld.module2.testing.model.MessageTemplate;
 import com.epam.ld.module2.testing.repository.MessageTemplateRepository;
 import com.epam.ld.module2.testing.service.MessageTemplateService;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
 
   @Override
   public List<MessageTemplate> findAll() {
-    return List.of(MessageTemplate.builder().build());
+    return (List<MessageTemplate>) repository.findAll();
   }
 
   @Override
