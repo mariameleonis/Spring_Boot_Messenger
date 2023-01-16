@@ -32,7 +32,6 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -350,6 +349,22 @@ class TemplateUtilsTest {
     System.setIn(new ByteArrayInputStream("3".getBytes()));
     val result = TemplateUtils.readMessageTemplateId();
     assertEquals(3L, result);
+    System.setIn(System.in);
+  }
+
+  @Test
+  void readMessageTemplateId_userShouldSeePromptLineToEnterTemplateId() {
+    System.setIn(new ByteArrayInputStream("3".getBytes()));
+    Logger log = (Logger) LoggerFactory.getLogger(TemplateUtils.class);
+    val testLogAppender = new TestLogAppender();
+    log.addAppender(testLogAppender);
+    testLogAppender.start();
+
+    TemplateUtils.readMessageTemplateId();
+    val lastLoggedEvent = testLogAppender.getLastLoggedEvent();
+
+    assertEquals("Please, enter template id:", lastLoggedEvent.getMessage());
+
     System.setIn(System.in);
   }
 
