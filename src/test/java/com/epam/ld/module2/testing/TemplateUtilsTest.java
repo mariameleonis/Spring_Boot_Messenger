@@ -45,6 +45,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(FileOutputExtension.class)
 class TemplateUtilsTest {
 
   @Test
