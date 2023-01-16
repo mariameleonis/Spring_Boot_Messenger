@@ -307,6 +307,17 @@ class TemplateUtilsTest {
   }
 
   @Test
+  void readTemplateValues_shouldReadValidUserInputUntilStopWordEntered() {
+    System.setIn(new ByteArrayInputStream("key1=value1\nkey2=value2\ndone\n".getBytes()));
+
+    Map<String, String> result = TemplateUtils.readTemplateValues();
+
+    assertEquals(2, result.size());
+
+    System.setIn(System.in);
+  }
+
+  @Test
   @Tag("UnitTest")
   void readTemplateValues_shouldReadFromFileAndReturnMap() throws IOException {
     String fileName = null;
