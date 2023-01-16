@@ -21,6 +21,7 @@ import lombok.val;
 public class TemplateUtils {
 
   private static final String TEMPLATE_REGEX = "\\$\\{([^}]+)\\}";
+  public static final String STOP_WORD = "done";
 
   private TemplateUtils() {
 
@@ -64,11 +65,14 @@ public class TemplateUtils {
 
   public static Map<String, String> readTemplateValues() {
     val scanner = new Scanner(System.in);
-    log.info("Enter the values in the format 'key=value':");
+    log.info("Enter the values in the format 'key=value'. Type 'done' to finish:");
     Map<String, String> values = new HashMap<>();
     String line;
     while (scanner.hasNextLine()) {
       line = scanner.nextLine();
+      if (line.equals(STOP_WORD)) {
+        break;
+      }
       String[] parts = line.split("=");
       values.put(parts[0], parts[1]);
     }
