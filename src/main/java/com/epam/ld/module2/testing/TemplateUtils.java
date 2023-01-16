@@ -77,13 +77,14 @@ public class TemplateUtils {
   }
 
   public static Long readMessageTemplateId() {
-    val scanner = new Scanner(System.in);
-    try {
-      return Long.parseLong(scanner.nextLine());
-    } catch (NumberFormatException e) {
-      log.error("Invalid input. Please enter a valid long value.");
+    Scanner scanner = new Scanner(System.in);
+    while (true) {
+      try {
+        return Long.parseLong(scanner.nextLine());
+      } catch (NumberFormatException e) {
+        log.error("Invalid input. Please enter a valid long value.");
+      }
     }
-    return 235L;
   }
 
   public static void writeMessageToFile(Message message, String filename) { }
