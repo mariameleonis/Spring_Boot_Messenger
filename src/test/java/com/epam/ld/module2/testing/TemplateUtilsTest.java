@@ -320,7 +320,7 @@ class TemplateUtilsTest {
 
   @Test
   void readMessageTemplateId_shouldLogErrorIfInputIsInvalid() {
-    System.setIn(new ByteArrayInputStream("invalid".getBytes()));
+    System.setIn(new ByteArrayInputStream("invalid\n123".getBytes()));
     Logger log = (Logger) LoggerFactory.getLogger(TemplateUtils.class);
     val testLogAppender = new TestLogAppender();
     log.addAppender(testLogAppender);
