@@ -374,11 +374,11 @@ class TemplateUtilsTest {
           .bodyTemplate(templateFile)
           .build();
 
-      Map<String, String> templateValues = (Map<String, String>) arguments.get()[2];
-      String subjectTemplate = (String) arguments.get()[0];
-      String bodyTemplate = (String) arguments.get()[1];
-      String expectedSubject = (String) arguments.get()[3];
-      String expectedBody = (String) arguments.get()[4];
+      val templateValues = (Map<String, String>) arguments.get()[2];
+      val subjectTemplate = (String) arguments.get()[0];
+      val bodyTemplate = (String) arguments.get()[1];
+      val expectedSubject = (String) arguments.get()[3];
+      val expectedBody = (String) arguments.get()[4];
 
       return DynamicTest.dynamicTest("Test generateMessage: " + subjectTemplate + " , " + bodyTemplate, () -> {
 
