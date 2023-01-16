@@ -52,10 +52,10 @@ class TemplateUtilsTest {
     val values = Map.of(
         "name", "${tag}");
 
-    val expectedContent = "Hello, ${name}!";
-    val expectedSubject = "Hello, ${tag}!";
+    val content = "Hello, ${name}!";
+
     try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
-      mocked.when(() -> TemplateUtils.getContent(anyString())).thenReturn(expectedContent);
+      mocked.when(() -> TemplateUtils.getContent(anyString())).thenReturn(content);
       assertNotNull(TemplateUtils.generateMessage(template, values));
     }
   }
