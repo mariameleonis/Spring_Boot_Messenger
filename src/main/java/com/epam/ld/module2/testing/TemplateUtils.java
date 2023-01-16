@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -37,6 +38,7 @@ public class TemplateUtils {
 
   private static String overrideTemplateContent(String templateContent,
       Map<String, String> templateValues) throws TemplateException {
+    Map<String, String> encodedValues = new HashMap<>();
     var result = templateContent;
     val pattern = Pattern.compile(TEMPLATE_REGEX);
     val matcher = pattern.matcher(templateContent);
@@ -45,7 +47,18 @@ public class TemplateUtils {
       if (!templateValues.containsKey(placeHolder)) {
         throw new TemplateException("No value provided for placeholder: " + placeHolder);
       }
+
+      val value = templateValues.get(placeHolder);
+      if (value.matches(TEMPLATE_REGEX)) {
+        encodedValues.put(matcher.group(), Base64.getEncoder().encodeToString(value.getBytes()));
+        break;
+      }
       result = result.replaceFirst(Pattern.quote(matcher.group()), templateValues.get(placeHolder));
+    }
+    if (!encodedValues.isEmpty()) {
+      for (Map.Entry<String, String> entry : encodedValues.entrySet()) {
+        result  = result.replace(entry.getKey(), new String(Base64.getDecoder().decode(entry.getValue())));
+      }
     }
     return result;
   }
@@ -98,12 +111,11 @@ public class TemplateUtils {
     }
   }
 
-  @SneakyThrows
-  static String getContent(String fileName) {
+  static String getContent(String fileName) throws TemplateNotFoundException {
     String content;
     try (val is = TemplateUtils.class.getClassLoader().getResourceAsStream(fileName)) {
       content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-    } catch (NullPointerException e) {
+    } catch (NullPointerException | IOException e) {
       throw new TemplateNotFoundException("Template associated with file " + fileName + "cannot be found.");
     }
 
