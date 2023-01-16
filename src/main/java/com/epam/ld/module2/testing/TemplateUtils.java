@@ -94,7 +94,8 @@ public class TemplateUtils {
   }
 
   public static Long readMessageTemplateId() {
-    Scanner scanner = new Scanner(System.in);
+    val scanner = new Scanner(System.in);
+    log.info("Please, enter template id:");
     while (true) {
       try {
         return Long.parseLong(scanner.nextLine());
