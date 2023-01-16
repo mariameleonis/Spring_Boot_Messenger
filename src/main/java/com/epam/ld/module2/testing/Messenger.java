@@ -35,7 +35,7 @@ public class Messenger {
       template = readTemplate();
       templateValues = readTemplateValues();
     } else {
-      template = messageTemplateService.findByType(DEFAULT_TEMPLATE);
+      template = messageTemplateService.findByCode(DEFAULT_TEMPLATE);
       templateValues = readTemplateValues(args[0]);
     }
 

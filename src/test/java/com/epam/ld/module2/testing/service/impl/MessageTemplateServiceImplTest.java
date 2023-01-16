@@ -37,4 +37,11 @@ class MessageTemplateServiceImplTest {
     val result = service.findAll();
     assertEquals(messageTemplates, result);
   }
+
+  @Test
+  void findByCode_shouldCallRepositoryFindByCode() {
+    val code = "code";
+    service.findByCode(code);
+    verify(repository).findByCode(code);
+  }
 }

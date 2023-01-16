@@ -7,6 +7,6 @@ public interface MessageTemplateService {
 
   List<MessageTemplate> findAll();
 
-  MessageTemplate findByType(String type);
+  MessageTemplate findByCode(String type);
 
 }

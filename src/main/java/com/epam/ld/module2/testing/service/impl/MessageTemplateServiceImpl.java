@@ -19,7 +19,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
   }
 
   @Override
-  public MessageTemplate findByType(String type) {
+  public MessageTemplate findByCode(String type) {
     return null;
   }
 }
