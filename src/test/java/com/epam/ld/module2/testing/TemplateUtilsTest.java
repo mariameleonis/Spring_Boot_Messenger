@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -25,6 +26,7 @@ import java.util.Map;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -285,6 +287,20 @@ class TemplateUtilsTest {
     val result = TemplateUtils.readMessageTemplateId();
     assertEquals(123L, result);
     System.setIn(System.in);
+  }
+
+  @TempDir
+  File folder;
+  @Test
+  void writeMessageToFile_WithValidInput_ShouldCreateFile() throws IOException {
+    val filename = folder.getAbsolutePath() + "/test.txt";
+    val message = mock(Message.class);
+
+    TemplateUtils.writeMessageToFile(message, filename);
+
+    val file = new File(filename);
+
+    assertTrue(file.exists());
   }
 
 }
