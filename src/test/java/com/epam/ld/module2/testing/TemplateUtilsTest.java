@@ -27,6 +27,13 @@ import lombok.val;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
+import org.junit.jupiter.api.condition.DisabledOnJre;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -319,6 +326,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @DisabledIfEnvironmentVariable(named = "PROCESSOR_ARCHITECTURE", matches = ".*32.*")
   void readMessageTemplateId_shouldLogErrorIfInputIsInvalid() {
     System.setIn(new ByteArrayInputStream("invalid\n123".getBytes()));
     Logger log = (Logger) LoggerFactory.getLogger(TemplateUtils.class);
@@ -336,6 +344,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @DisabledIfSystemProperty(named = "os.version", matches = ".*10.*")
   void readMessageTemplateId_shouldReadFromConsoleUntilValidValueEntered() {
     System.setIn(new ByteArrayInputStream("abc\n123\n".getBytes()));
     val result = TemplateUtils.readMessageTemplateId();
@@ -358,6 +367,7 @@ class TemplateUtilsTest {
   }
 
   @Test
+  @DisabledOnJre(JRE.JAVA_13)
   void writeMessageToFile_WithValidInput_ShouldCreateFileWithMessageSubjectAndBody() throws IOException {
     val subject = "Test Subject";
     val body = "Test Body";
@@ -379,6 +389,7 @@ class TemplateUtilsTest {
 
   @ParameterizedTest
   @MethodSource("generateMessageArguments")
+  @DisabledOnOs(OS.WINDOWS)
   void testGenerateMessage_parametrizedTemplateValues(String subjectTemplate, String bodyTemplate,
       Map<String, String> templateValues, String expectedSubject, String expectedBody)
       throws TemplateException {
@@ -410,6 +421,7 @@ class TemplateUtilsTest {
   }
 
   @TestFactory
+  @DisabledOnOs({OS.AIX, OS.LINUX, OS.SOLARIS})
   Stream<DynamicTest> generateMessageTest_dynamicTest() {
     return Stream.of(
         Arguments.of("Hello, ${name}!", "Dear ${name}", Map.of("name", "Mariya"), "Hello, Mariya!", "Dear Mariya"),
