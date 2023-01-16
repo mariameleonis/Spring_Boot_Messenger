@@ -9,8 +9,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
+import ch.qos.logback.classic.Logger;
 import com.epam.ld.module2.testing.TemplateUtils.Message;
 import com.epam.ld.module2.testing.exception.TemplateException;
 import com.epam.ld.module2.testing.exception.TemplateNotFoundException;
@@ -30,9 +29,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 
 @ExtendWith(MockitoExtension.class)
 class TemplateUtilsTest {
