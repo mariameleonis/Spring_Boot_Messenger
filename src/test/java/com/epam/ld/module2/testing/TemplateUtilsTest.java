@@ -62,20 +62,42 @@ class TemplateUtilsTest {
 
   @Test
   void generateMessage_messageSubjectShouldNeverBeNull() throws TemplateException {
-    val template = MessageTemplate.builder().build();
+    val subjectTemplate = "subject.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(subjectTemplate)
+        .bodyTemplate(subjectTemplate)
+        .build();
+
     val values = Map.of(
-        "name", "Mariya");
-    val result = TemplateUtils.generateMessage(template, values);
-    assertNotNull(result.subject());
+        "name", "${tag}");
+
+    val content = "Hello, ${name}!";
+
+    try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
+      mocked.when(() -> TemplateUtils.getContent(anyString())).thenReturn(content);
+      assertNotNull(TemplateUtils.generateMessage(template, values).subject());
+    }
   }
 
   @Test
   void generateMessage_messageSubjectShouldNeverBeBlank() throws TemplateException {
-    val template = MessageTemplate.builder().build();
+    val subjectTemplate = "subject.txt";
+
+    val template = MessageTemplate.builder()
+        .subjectTemplate(subjectTemplate)
+        .bodyTemplate(subjectTemplate)
+        .build();
+
     val values = Map.of(
-        "name", "Mariya");
-    val result = TemplateUtils.generateMessage(template, values);
-    assertFalse(result.subject().isBlank());
+        "name", "${tag}");
+
+    val content = "Hello, ${name}!";
+
+    try (MockedStatic<TemplateUtils> mocked = mockStatic(TemplateUtils.class, Mockito.CALLS_REAL_METHODS)) {
+      mocked.when(() -> TemplateUtils.getContent(anyString())).thenReturn(content);
+      assertFalse(TemplateUtils.generateMessage(template, values).subject().isBlank());
+    }
   }
 
   @Test
