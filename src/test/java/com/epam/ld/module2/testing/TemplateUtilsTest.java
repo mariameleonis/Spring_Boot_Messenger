@@ -303,4 +303,24 @@ class TemplateUtilsTest {
     assertTrue(file.exists());
   }
 
+  @Test
+  void writeMessageToFile_WithValidInput_ShouldCreateFileWithMessageSubjectAndBody() throws IOException {
+    val subject = "Test Subject";
+    val body = "Test Body";
+    val filename = folder.getAbsolutePath() + "/test.txt";
+    val message = new Message(subject, body);
+
+    TemplateUtils.writeMessageToFile(message, filename);
+
+    val file = new File(filename);
+
+    val expectedContent = """
+    Subject: Test Subject
+    Body: Test Body""";
+
+    val content = new String(Files.readAllBytes(file.toPath()));
+
+    assertEquals(expectedContent.trim(), content.trim());
+  }
+
 }
