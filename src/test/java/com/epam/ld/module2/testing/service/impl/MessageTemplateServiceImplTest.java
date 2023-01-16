@@ -1,6 +1,7 @@
 package com.epam.ld.module2.testing.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.verify;
 
 import com.epam.ld.module2.testing.repository.MessageTemplateRepository;
 import lombok.val;
@@ -23,5 +24,11 @@ class MessageTemplateServiceImplTest {
   void findAll_shouldNotReturnEmptyList() {
     val result = service.findAll();
     assertFalse(result.isEmpty());
+  }
+
+  @Test
+  void findAll_shouldCallRepositoryFindAll() {
+    service.findAll();
+    verify(repository).findAll();
   }
 }
