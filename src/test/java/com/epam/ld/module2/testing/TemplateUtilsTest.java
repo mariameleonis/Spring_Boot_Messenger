@@ -44,7 +44,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageSubjectShouldNeverBeNull() throws TemplateException, IOException {
+  void generateMessage_messageSubjectShouldNeverBeNull() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -53,7 +53,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageSubjectShouldNeverBeBlank() throws TemplateException, IOException {
+  void generateMessage_messageSubjectShouldNeverBeBlank() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -62,7 +62,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageBodyShouldNeverBeNull() throws TemplateException, IOException {
+  void generateMessage_messageBodyShouldNeverBeNull() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -71,7 +71,7 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void generateMessage_messageBodyShouldNeverBeBlank() throws TemplateException, IOException {
+  void generateMessage_messageBodyShouldNeverBeBlank() throws TemplateException {
     val template = MessageTemplate.builder().build();
     val values = Map.of(
         "name", "Mariya");
@@ -81,7 +81,7 @@ class TemplateUtilsTest {
 
   @Test
   void generateMessage_shouldReturnSubjectTemplateContentIfNoPlaceholders()
-      throws TemplateException, IOException {
+      throws TemplateException {
     val subjectTemplate = "subject.txt";
 
     val template = MessageTemplate.builder()
@@ -100,7 +100,7 @@ class TemplateUtilsTest {
 
   @Test
   void generateMessage_shouldOverrideSubjectTemplateWithProvidedValue()
-      throws TemplateException, IOException {
+      throws TemplateException {
     val subjectTemplate = "subject.txt";
 
     val template = MessageTemplate.builder()
