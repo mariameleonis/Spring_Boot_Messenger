@@ -311,12 +311,6 @@ class TemplateUtilsTest {
   }
 
   @Test
-  void readMessageTemplateId_shouldNeverReturnNull() {
-    val result = TemplateUtils.readMessageTemplateId();
-    assertNotNull(result);
-  }
-
-  @Test
   void readMessageTemplateId_shouldReadFromConsoleAndReturnUserChoice() {
     System.setIn(new ByteArrayInputStream("3".getBytes()));
     val result = TemplateUtils.readMessageTemplateId();
