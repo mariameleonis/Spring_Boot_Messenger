@@ -318,7 +318,8 @@ class TemplateUtilsTest {
 
   @Test
   @Tag("UnitTest")
-  void readTemplateValues_shouldReadFromFileAndReturnMap() throws IOException {
+  void readTemplateValues_shouldReadFromFileAndReturnMap()
+      throws IOException, TemplateNotFoundException {
     String fileName = null;
     Path path = null;
     try {
@@ -341,6 +342,15 @@ class TemplateUtilsTest {
 
     assertEquals("value1", result.get("key1"));
     assertEquals("value2", result.get("key2"));
+  }
+
+  @Test
+  void readTemplateValues_ifFileNotFoundShouldThrowTemplateNotFoundException() {
+    val fileName = "nonExistentFile.txt";
+
+    assertThrows(TemplateNotFoundException.class, () -> {
+      TemplateUtils.readTemplateValues(fileName);
+    });
   }
 
   @Test
