@@ -79,7 +79,8 @@ public class TemplateUtils {
     return values;
   }
 
-  public static Map<String, String> readTemplateValues(String filename) {
+  public static Map<String, String> readTemplateValues(String filename)
+      throws TemplateNotFoundException {
     Map<String, String> map = new HashMap<>();
     try (val br = new BufferedReader(new FileReader(filename))) {
       String line;
@@ -88,7 +89,7 @@ public class TemplateUtils {
         map.put(parts[0], parts[1]);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new TemplateNotFoundException("The system cannot find the file specified");
     }
     return map;
   }
