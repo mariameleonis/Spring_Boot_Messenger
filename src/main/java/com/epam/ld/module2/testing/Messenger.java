@@ -29,9 +29,13 @@ public class Messenger {
   private final MessageTemplateService messageTemplateService;
 
   public void sendNotification(String... args) throws TemplateException, IOException {
+    int length = args.length;
+    if (length != 0 && length != 2) {
+      throw new RuntimeException("Invalid arguments count");
+    }
     MessageTemplate template;
     Map<String, String> templateValues;
-    int length = args.length;
+
     if (length == 0) {
       template = readTemplate();
       templateValues = readTemplateValues();

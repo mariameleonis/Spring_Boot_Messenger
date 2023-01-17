@@ -1,5 +1,7 @@
 package com.epam.ld.module2.testing;
 
+import static java.lang.System.exit;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
@@ -22,12 +24,8 @@ public class SpringBootMessengerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		if (args.length == 0 || args.length == 2) {
-			log.info("Start sending notification process");
 			messenger.sendNotification(args);
-		} else {
-			log.info("Incorrect number of arguments");
-		}
+			exit(0);
 	}
 
 }
