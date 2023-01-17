@@ -9,6 +9,7 @@ import com.epam.ld.module2.testing.service.MessageTemplateService;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -61,8 +62,17 @@ public class Messenger {
   private MessageTemplate readTemplate() {
     val templates = messageTemplateService.findAll().stream()
         .collect(Collectors.toMap(MessageTemplate::getId, Function.identity()));
+    displayMessageTemplates(templates);
     val templateId = readMessageTemplateId();
     return templates.get(templateId);
+  }
+
+  private void displayMessageTemplates(Map<Long, MessageTemplate> templates) {
+    val joiner = new StringJoiner("\n");
+    for (Map.Entry<Long, MessageTemplate> template : templates.entrySet()) {
+      joiner.add(template.getKey() + " - " + template.getValue().getCode());
+    }
+    log.info("Existed message templates:\n" + joiner);
   }
 
   private Client getDefaultClient() {
